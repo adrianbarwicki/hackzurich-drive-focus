@@ -48,5 +48,11 @@ Presentations, pitch decks etc.
 3. Integrate API in the Live-presentation
 4. Work on design
 
+## HackZurich Team
+Adrian Barwicki (adrian@vq-labs.com)
+Ingmar Wolff (@TODO)
+Marcel Engelmann (mail@menux.de)
+Lukas Maxeiner (@TODO)
+
 ## Licence
 MIT
