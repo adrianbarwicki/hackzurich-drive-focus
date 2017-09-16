@@ -14,10 +14,30 @@ Fact 2: 6 out of 10 car crashes involve distraction, out of which 12% are due to
 ## Drive:Focus
 This project intends to promote safe behaviours and new ideas to embed road-smartness into the future way of mobility.
 
+
 ## What is used?
-* Ionic framework for client mobile application.
-* NodeJS for API
-* Microsoft Cognitive Services
+* Microsoft Cognitive Services is used. MVP uses entity/item tagging to detect possible elements of the photo which may be assosiated with distraction / tiredness. i.e cellphone.
+
+### Proposed improvements
+***Custom Computer Vision***
+Microsoft Azure offers the Custom Computer Vision service, which can be train with a set of photos of drives which may be sleepy / tired.
+
+***Similar face search***
+We collect photos of people looking at the phone and use the Similar Face Search service to detect it.
+
+***Eye-Nose Distance***
+If the head is directed towards down, it might be an indication for a driver sleeping or looking down at the phone, even if the phone may not be visible at a time.
+The distance between eyes and the nose, when projected onto a 2D-plane, is shorter in this case.
+
+
+
+
+
+4. Active drives with full control
+
+With this data train separately  models that we use to 
+
+
 
 ## Where to start?
 ***/client**

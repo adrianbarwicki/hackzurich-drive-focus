@@ -29,8 +29,10 @@ app.get('/driver/behaviour', (req, res) => {
     /**
      * This needs to be improved. Can we detect that a person is sleeping or has closed eyes?
      */
-    const isFocused = !(result.description.tags.indexOf("cellphone") > -1 ||
-    result.description.tags.indexOf("eating") > -1);
+    const isFocused = !(
+        result.description.tags.indexOf("cellphone") > -1 ||
+        result.description.tags.indexOf("eating") > -1 ||
+        result.description.tags.indexOf("phone") > -1);
 
     res.send({
         extracted: {
