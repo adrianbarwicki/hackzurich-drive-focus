@@ -1,27 +1,18 @@
-Ionic App Base
-==============
+# Drive:Focus
 
-A starting project for Ionic that optionally supports using custom SCSS.
+## Are smart devices smart enough?
+Hackzurich project for T-Systems & Zurich Insurance
 
-## Using this project
+Smart devices have greatly reshaped our way of living, including mobility. Although they are bringing much convenience and benefits, the associated risks are also increasing: people are driving, walking, cycling, skiing, riding, etc. while being distracted by their smart devices. <br />
 
-We recommend using the [Ionic CLI](https://github.com/ionic-team/ionic-cli) to create new Ionic projects that are based on this project but use a ready-made starter template.
+Numerous facts support this statement, such as:
 
-For example, to start a new Ionic project with the default tabs interface, make sure the `ionic` utility is installed:
+Fact 1: 43% of young people have walked into something or someone while checking their phone. In fact, countries are creating “smartphone” walking lanes goo.gl/N0Xt2H<br />
 
-```bash
-$ npm install -g ionic cordova
-```
+Fact 2: 6 out of 10 car crashes involve distraction, out of which 12% are due to the use of mobile phones goo.gl/jVmPpT<br />
 
-Then run:
+## Drive:Focus
+This project intends to promote safe behaviours and new ideas to embed road-smartness into the future way of mobility.
 
-```bash
-$ ionic start myProject tabs --type=ionic1
-```
-
-More info on this can be found on the Ionic [Getting Started](https://ionicframework.com/getting-started) page and the [Ionic CLI](https://github.com/ionic-team/ionic-cli) repo.
-
-## Issues
-
-Issues have been disabled on this repo. If you do find an issue or have a question, consider posting it on the [Ionic Forum](https://forum.ionicframework.com/). If there is truly an error, follow our guidelines for [submitting an issue](https://ionicframework.com/submit-issue/) to the main Ionic repository.
-# hackzurich-drive-focus
+## Licence
+MIT
