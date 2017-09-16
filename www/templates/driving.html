@@ -1,0 +1,29 @@
+<ion-content scroll="false" ng-class="{ 'red': !isFocused }">
+    <div ng-if="!isDriveMode" class="row" style="margin-top: 150px">
+        <div class="col-33 col-offset-33">
+            <button ng-if="!isDriveMode" ng-click="start()" style="display:block; margin: 0 auto" class="button button-default">
+                Start Drive-Mode
+            </button>
+        </div>
+    </div>
+    
+    <div ng-if="isDriveMode && isFocused" class="row" style="margin-top: 100px">
+        <div class="col-50 col-offset-25">
+            <h1 class="text-center">{{drivingData.totalDistance}} km</h1>
+            <p class="text-center">You have stayed focused for {{drivingData.lastFocusDistance}} km!</p>
+            <button ng-click="stop()" style="display:block; margin: 0 auto" class="button button-default">
+                Stop
+            </button>
+        </div>
+    </div>
+
+    <div ng-if="isDriveMode && !isFocused" class="row" style="margin-top: 100px">
+            <div class="col-50 col-offset-25">
+                <h1 class="text-center">Ups..</h1>
+                <p class="text-center">If you stay focused, you collect points that you can exchange for special rewards!</p>
+                <button ng-click="stop()" style="display:block; margin: 0 auto" class="button button-default">
+                    Stop
+                </button>
+            </div>
+        </div>
+</ion-content>

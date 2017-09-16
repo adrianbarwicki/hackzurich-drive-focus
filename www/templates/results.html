@@ -1,0 +1,26 @@
+<ion-content scroll="false">
+    <div class="row" style="margin-top: 40px">
+        <div class="col-33 col-offset-33">
+                <h1 class="text-center"><span style="padding-top:5px; font-size: 50px;" class="icon ion-ios7-checkmark-outline"></span> Success</h1>
+                <p class="text-center"><strong>{{reward.points}} HackZurichPoints have been collected!</strong></p>
+        </div>
+    </div>
+
+    <div class="row">
+            <div class="col-33 col-offset-33">
+                <p><span style="font-size: 17px;" class="icon ion-ios7-arrow-thin-up"></span> {{reward.withFocus}}km have been driven with focus.</p>
+                <hr />
+                <p><span style="font-size: 17px;" class="icon ion-ios7-arrow-thin-down"></span> {{reward.withoutFocus}}km have been driven without focus.</p>
+                <hr />
+                <p>{{reward.distance}} have been drived with the app.</p>
+            </div>
+    </div>
+
+    <div class="row" style="position: absolute; bottom: 20px;">
+        <div class="col-33 col-offset-33 text-center">
+                <a ng-click="startOver()" style="display:block; margin: 0 auto; color: white;">
+                    Start over
+                </a>
+        </div>
+    </div>
+</ion-content>
