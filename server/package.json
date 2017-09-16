@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "cognitive-services": "^0.1.2",
     "express": "^4.15.4"
   }
 }

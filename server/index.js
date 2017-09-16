@@ -1,11 +1,41 @@
-var express = require('express')
-var app = express()
- 
+const express = require('express');
+const multer  = require('multer');
+const upload  = multer();
+const cognitiveServices = require('cognitive-services');
+
+const app = express();
+
+if (!process.env.MCS_HACKZURICH_API_KEY) {
+    throw new Error('Specify MCS Api Key!');
+}
+
+const computerVision = cognitiveServices.computerVision({
+    API_KEY: process.env.MCS_HACKZURICH_API_KEY
+})
+
+const parameters = {
+    visualFeatures: "Categories"
+};
+
+const body = {};
+
 app.get('/*', (req, res) => {
   res.send('Drive:Focus is up and Running!')
 });
 
-app.post('/upload', (req, res) => {
+app.post('/upload', upload.single('image'), (req, res) => {
+    /**
+    computerVision.analyzeImage({
+        parameters,
+        body
+    })
+    .then((response) => {
+        console.log('Got response', response);
+    })
+    .catch((err) => {
+        console.error('Encountered error making request:', err);
+    });
+    */
     res.send({
         "categories": [
           {
@@ -111,4 +141,6 @@ app.post('/upload', (req, res) => {
       });
   })
  
-app.listen(8080);
+app.listen(8080, () => {
+    console.log('Drive:Focus is listening!')
+});

@@ -14,5 +14,23 @@ Fact 2: 6 out of 10 car crashes involve distraction, out of which 12% are due to
 ## Drive:Focus
 This project intends to promote safe behaviours and new ideas to embed road-smartness into the future way of mobility.
 
+## What is used?
+* Ionic framework for client mobile application.
+* NodeJS for API
+* Microsoft Cognitive Services
+
+## Where to start?
+***/client**
+Ionic app
+
+***/server**
+NodeJS Server
+
+***/live-demo**
+Live demo for the presentation
+
+***/presentations**
+Presentations, pitch decks etc.
+
 ## Licence
 MIT
