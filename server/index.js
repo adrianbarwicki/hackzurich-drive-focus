@@ -1,146 +1,72 @@
 const express = require('express');
 const multer  = require('multer');
+const cors = require('cors')
+const bodyParser = require('body-parser');
+const request = require("request");
 const upload  = multer();
-const cognitiveServices = require('cognitive-services');
-
 const app = express();
+ 
+app.use(bodyParser.json());
+
+app.use(cors());
+
+// in-memory stack (push/pop) database for simplicity
+const RESULTS = [];
 
 if (!process.env.MCS_HACKZURICH_API_KEY) {
     throw new Error('Specify MCS Api Key!');
 }
 
-const computerVision = cognitiveServices.computerVision({
-    API_KEY: process.env.MCS_HACKZURICH_API_KEY
-})
+const MCS_HACKZURICH_API_KEY = process.env.MCS_HACKZURICH_API_KEY;
 
-const parameters = {
-    visualFeatures: "Categories"
-};
+app.get('/driver/behaviour', (req, res) => {
+    const result = RESULTS[RESULTS.length - 1];
 
-const body = {};
+    if (!result) {
+        return res.send({});
+    }
 
-app.get('/*', (req, res) => {
-  res.send('Drive:Focus is up and Running!')
+    /**
+     * This needs to be improved. Can we detect that a person is sleeping or has closed eyes?
+     */
+    const isFocused = !(result.description.tags.indexOf("cellphone") > -1 ||
+    result.description.tags.indexOf("eating") > -1);
+
+    res.send({
+        extracted: {
+            isFocused: isFocused
+        },
+        msc: RESULTS[RESULTS.length - 1]
+    });
 });
 
 app.post('/upload', upload.single('image'), (req, res) => {
-    /**
-    computerVision.analyzeImage({
-        parameters,
-        body
-    })
-    .then((response) => {
-        console.log('Got response', response);
-    })
-    .catch((err) => {
-        console.error('Encountered error making request:', err);
-    });
-    */
-    res.send({
-        "categories": [
-          {
-            "name": "abstract_",
-            "score": 0.00390625
-          },
-          {
-            "name": "people_",
-            "score": 0.83984375,
-            "detail": {
-              "celebrities": [
-                {
-                  "name": "Satya Nadella",
-                  "faceRectangle": {
-                    "left": 597,
-                    "top": 162,
-                    "width": 248,
-                    "height": 248
-                  },
-                  "confidence": 0.999028444
-                }
-              ],
-              "landmarks":[
-                {
-                  "name":"Forbidden City",
-                  "confidence": 0.9978346
-                }
-              ]
+    const file = req.file;
+
+    request
+        .post('https://westeurope.api.cognitive.microsoft.com/vision/v1.0/analyze?visualFeatures=Categories,Description,Color&language=en', {
+            headers: {
+                "Ocp-Apim-Subscription-Key": MCS_HACKZURICH_API_KEY,
+                "Content-Type": "application/json"
+            },
+            formData: {
+                body: file.buffer
             }
-          }
-        ],
-        "adult": {
-          "isAdultContent": false,
-          "isRacyContent": false,
-          "adultScore": 0.0934349000453949,
-          "racyScore": 0.068613491952419281
-        },
-        "tags": [
-          {
-            "name": "person",
-            "confidence": 0.98979085683822632
-          },
-          {
-            "name": "man",
-            "confidence": 0.94493889808654785
-          },
-          {
-            "name": "outdoor",
-            "confidence": 0.938492476940155
-          },
-          {
-            "name": "window",
-            "confidence": 0.89513939619064331
-          }
-        ],
-        "description": {
-          "tags": [
-            "person",
-            "man",
-            "outdoor",
-            "window",
-            "glasses"
-          ],
-          "captions": [
-            {
-              "text": "Satya Nadella sitting on a bench",
-              "confidence": 0.48293603002174407
+        }, (err, response, body) => {
+            if (err) {
+                return cb(err);
             }
-          ]
-        },
-        "requestId": "0dbec5ad-a3d3-4f7e-96b4-dfd57efe967d",
-        "metadata": {
-          "width": 1500,
-          "height": 1000,
-          "format": "Jpeg"
-        },
-        "faces": [
-          {
-            "age": 44,
-            "gender": "Male",
-            "faceRectangle": {
-              "left": 593,
-              "top": 160,
-              "width": 250,
-              "height": 250
-            }
-          }
-        ],
-        "color": {
-          "dominantColorForeground": "Brown",
-          "dominantColorBackground": "Brown",
-          "dominantColors": [
-            "Brown",
-            "Black"
-          ],
-          "accentColor": "873B59",
-          "isBWImg": false
-        },
-        "imageType": {
-          "clipArtType": 0,
-          "lineDrawingType": 0
-        }
-      });
-  })
+
+            RESULTS.push(JSON.parse(body));
+
+            res.send(response);
+        });
+});
  
-app.listen(8080, () => {
+app.get('/*', (req, res) => {
+    res.send('Drive:Focus is up and Running!')
+});
+
+app.listen(8090, () => {
     console.log('Drive:Focus is listening!')
 });

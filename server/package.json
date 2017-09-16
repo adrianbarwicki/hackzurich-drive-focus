@@ -9,7 +9,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "cognitive-services": "^0.1.2",
-    "express": "^4.15.4"
+    "body-parser": "^1.18.1",
+    "cors": "^2.8.4",
+    "express": "^4.15.4",
+    "request": "^2.81.0"
   }
 }
