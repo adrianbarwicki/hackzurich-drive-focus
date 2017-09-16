@@ -69,6 +69,6 @@ app.get('/*', (req, res) => {
     res.send('Drive:Focus is up and Running!')
 });
 
-app.listen(8090, () => {
+app.listen(process.env.MCS_HACKZURICH_PORT || 8090, () => {
     console.log('Drive:Focus is listening!')
 });
