@@ -29,16 +29,6 @@ We collect photos of people looking at the phone and use the Similar Face Search
 If the head is directed towards down, it might be an indication for a driver sleeping or looking down at the phone, even if the phone may not be visible at a time.
 The distance between eyes and the nose, when projected onto a 2D-plane, is shorter in this case.
 
-
-
-
-
-4. Active drives with full control
-
-With this data train separately  models that we use to 
-
-
-
 ## Where to start?
 ***/client**
 Ionic app
