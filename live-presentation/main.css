@@ -1,0 +1,19 @@
+#video{
+	margin: 0 auto;
+}
+
+video {
+    display: flex;
+    vertical-align: middle;
+}
+
+#canvas{
+	display: none;
+}
+
+.iphone{
+	width: 700px;
+	height: 340px;
+	background: url('iphone-land.png') no-repeat;
+	background-size: 100%;
+}
