@@ -32,5 +32,11 @@ Live demo for the presentation
 ***/presentations**
 Presentations, pitch decks etc.
 
+## TODO's
+1. Deploy the server to T-Systems Cloud
+2. Integrate API in the Ionic App
+3. Integrate API in the Live-presentation
+4. Work on design
+
 ## Licence
 MIT

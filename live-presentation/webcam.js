@@ -110,6 +110,7 @@
 
   function takepicture() {
     var context = canvas.getContext('2d');
+    
     if (width && height) {
       canvas.width = width;
       canvas.height = height;
@@ -119,99 +120,46 @@
       photo.setAttribute('src', data);
       
       var subscriptionKey = '03772567483d4a07aa5da13bae6d21da';
-      var uriBase = "https://westeurope.api.cognitive.microsoft.com/vision/v1.0/analyze";
+      var uriBase = "http://localhost:8090/upload" || "https://westeurope.api.cognitive.microsoft.com/vision/v1.0/analyze";
 	 
-	  /*
-	  // Request parameters.
-      var params = {
-            "visualFeatures": "Categories,Description,Color",
-            "details": "",
-            "language": "en",
-      };
-    */
-    
-    var frame = captureVideoFrame('video', 'png');
-    var apiKey = "03772567483d4a07aa5da13bae6d21da";
-    var request = new XMLHttpRequest();
-    request.open('POST', 'https://westeurope.api.cognitive.microsoft.com/vision/v1.0/analyze?visualFeatures=Categories,Tags,Description,Faces,Color&language=en', true);
-    request.setRequestHeader("Content-Type", "application/octet-stream");
-    request.setRequestHeader("Ocp-Apim-Subscription-Key", apiKey);
-    request.send(frame.blob);
-    
-    //triggered when we receive an answer
-    request.onreadystatechange = function () {
-        if (request.readyState == XMLHttpRequest.DONE) {
-	        var answer = JSON.parse(request.responseText);
-	        console.log(answer.description.tags);
-	        
-	        var cList = null;
-	        var cList = $('ul.mylist');
-			$.each(answer.description.tags, function(i)
-			{
-			    var li = $('<li/>')
-			        .addClass('ui-menu-item')
-			        .attr('role', 'menuitem')
-			        .appendTo(cList);
-			    var aaa = $('<a/>')
-			        .addClass('ui-all')
-			        .text(answer.description.tags[i])
-			        .appendTo(li);
-			});
-	    }
-	}
-	        
-	       
-	        
-    
-                          	
-		/*
-        // Perform the REST API call.
-        $.ajax({
-            // url: uriBase + "?" + $.param(params),
-            //url: uriBase,
-
-            // Request headers.
-            beforeSend: function(xhrObj){
-	           	xhrObj.setRequestHeader("Content-Type","application/octet-stream");
-	           	xhrObj.setRequestHeader("Content-Type","multipart/form-data");
-                // xhrObj.setRequestHeader("Content-Type","application/json");
-                xhrObj.setRequestHeader("Ocp-Apim-Subscription-Key", subscriptionKey);
-            },
-
-            type: "POST",
-            cache: false,
-            contentType: false,
-            processData: false,
-            dataType: 'text',
-
-            // Request body.
-            // data: makeblob(data),
-            data: data,
-        })
-
-        .done(function(data) {
-            // Show formatted JSON on webpage.
-            $("#responseTextArea").val(JSON.stringify(data, null, 2));
-            console.log(data);
-        })
-
-        .fail(function(jqXHR, textStatus, errorThrown) {
-            // Display error message.
-            var errorString = (errorThrown === "") ? "Error. " : errorThrown + " (" + jqXHR.status + "): ";
-            errorString += (jqXHR.responseText === "") ? "" : jQuery.parseJSON(jqXHR.responseText).message;
-            alert(errorString);
-        });
-        */
-        
+      /*
+      // Request parameters.
+        var params = {
+              "visualFeatures": "Categories,Description,Color",
+              "details": "",
+              "language": "en",
+        };
+      */
       
-	  // responsiveVoice.speak("Hi there, you seem distracted. Could you put your phone away.");
+      var frame = captureVideoFrame('video', 'png');
+      var apiKey = "03772567483d4a07aa5da13bae6d21da";
 
+      var data = new FormData()
+      
+      data.append('image', frame.blob, 'image.png')
+
+      $.ajax({
+          url: "http://localhost:8090/upload",
+          data: data,
+          cache: false,
+          contentType: false,
+          processData: false,
+          type: 'POST'
+      })
+      .done(function(data) {
+          console.log(data);
+          console.log("Upload successfully");
+      });
     } else {
       clearphoto();
     }
   }
+    
 
   // Set up our event listener to run the startup process
   // once loading is complete.
   window.addEventListener('load', startup, false);
+
+
+
 })();
