@@ -31,7 +31,7 @@ const VERY_SENSITIVE_TAGS = [ 'cellphone', 'phone' ];
 const SENSITIVE_TAGS = [ 'eating', 'drinking' ];
 const REQUIRED_TAGS = [ 'person' ];
 
-let shouldBeFocused;
+var shouldBeFocused;
 
 const findOutIfFocused = result => {
     if (typeof shouldBeFocused !== 'undefined') {
