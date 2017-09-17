@@ -110,11 +110,17 @@ app.get('/*', (req, res) => {
  * used for testing purposes
  */
 app.put('/switch', (req, res) => {
-    if (req.query.reset) {
-        delete shouldBeFocused
+    if (req.query.action === 'on') {
+        shouldBeFocused = true;
     }
-    
-    shouldBeFocused = !shouldBeFocused;
+
+    if (req.query.action === 'off') {
+        shouldBeFocused = false;
+    }
+
+    if (req.query.action === 'undefined') {
+        delete shouldBeFocused;
+    }
     
     res.send({ ok: true });
 });
