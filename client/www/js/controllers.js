@@ -1,6 +1,6 @@
 angular.module('starter.controllers', [])
 
-.constant('API_URL', "http://drive-focus.vq-labs.com")
+.constant('API_URL', "https://hackzurich-env.eu-central-1.elasticbeanstalk.com")
 
 .service('hzTimeFormatter', function() {
   var convert = function(sec) {
