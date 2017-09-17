@@ -125,6 +125,6 @@ app.put('/switch', (req, res) => {
     res.send({ ok: true });
 });
 
-app.listen(process.env.MCS_HACKZURICH_PORT || 8090, () => {
+app.listen(process.env.PORT || process.env.MCS_HACKZURICH_PORT || 8090, () => {
     console.log('Drive:Focus is listening!')
 });
