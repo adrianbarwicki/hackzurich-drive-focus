@@ -31,7 +31,17 @@ const VERY_SENSITIVE_TAGS = [ 'cellphone', 'phone' ];
 const SENSITIVE_TAGS = [ 'eating', 'drinking' ];
 const REQUIRED_TAGS = [ 'person' ];
 
+let shouldBeFocused;
+
 const findOutIfFocused = result => {
+    if (typeof shouldBeFocused !== 'undefined') {
+        if (shouldBeFocused) {
+            return true
+        } else {
+            return false;
+        }
+    }
+
     return !(
         (result.tags
         .map(_ => _.name)
@@ -77,7 +87,11 @@ app.post('/upload', upload.single('image'), (req, res) => {
             }
         }, (err, response, body) => {
             if (err) {
-                return cb(err);
+                console.error(err);
+
+                return res.status(400).send({
+                    err: 'Something went wrong with the request'
+                });
             }
 
             const parsedBody = JSON.parse(body);
@@ -90,6 +104,19 @@ app.post('/upload', upload.single('image'), (req, res) => {
  
 app.get('/*', (req, res) => {
     res.send('Drive:Focus is up and Running!')
+});
+
+/**
+ * used for testing purposes
+ */
+app.put('/switch', (req, res) => {
+    if (req.query.reset) {
+        delete shouldBeFocused
+    }
+    
+    shouldBeFocused = !shouldBeFocused;
+    
+    res.send({ ok });
 });
 
 app.listen(process.env.MCS_HACKZURICH_PORT || 8090, () => {

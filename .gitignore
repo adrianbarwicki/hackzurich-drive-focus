@@ -1,4 +1,5 @@
 node_modules/
 deployment/
+demos/
 npm-debug.log
 client/node_modules
