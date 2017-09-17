@@ -116,7 +116,7 @@ app.put('/switch', (req, res) => {
     
     shouldBeFocused = !shouldBeFocused;
     
-    res.send({ ok });
+    res.send({ ok: true });
 });
 
 app.listen(process.env.MCS_HACKZURICH_PORT || 8090, () => {
