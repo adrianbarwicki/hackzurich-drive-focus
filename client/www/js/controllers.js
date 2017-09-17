@@ -1,5 +1,36 @@
 angular.module('starter.controllers', [])
 
+.constant('API_URL', "http://drive-focus.vq-labs.com")
+
+.service('hzTimeFormatter', function() {
+  var convert = function(sec) {
+    if (sec < 60) {
+      return sec + 's';
+    }
+
+    return Math.floor(sec / 60) + ':' + (sec % 60);
+  };
+
+  return {
+    convert: convert
+  };
+})
+.service('hzApi', function($http, API_URL) {
+  var checkStatus = function(cb) {
+    return $http
+    .get(API_URL + '/driver/behaviour')
+    .then(response => {
+      cb(response.data.extracted);
+    }, err => {
+      console.error(err);
+    })
+  };
+
+  return {
+    checkStatus: checkStatus
+  };
+})
+
 .service('hzTripRewards', function() {
   var rewards = [];
 
@@ -24,20 +55,39 @@ angular.module('starter.controllers', [])
   };
 })
 
-.controller('AppCtrl', function($scope, $state, $interval, hzTripRewards) {
+.controller('AppCtrl', function($scope, $state, $interval, hzApi, hzTripRewards, hzTimeFormatter) {
   $scope.drivingData = null;
   $scope.isDriveMode = false;
   $scope.isFocused = true;
   $scope.start = start;
   $scope.stop = stop;
 
+  $scope.calcTime = calcTime;
+
+  $scope.displayTime = function() {
+    return hzTimeFormatter.convert(calcTime())
+  };
+
   var runningInterval;
+
+  // it is not the best idea to invoke the $digest every sec, but for a 2sec fix, that's a good trade-off
+  $interval(function() {
+    $scope.now = Date.now();
+  }, 1000);
 
   initDrivingData();
 
   // private
+  function calcTime() {
+    var time = ($scope.now / 1000 | 0) - $scope.drivingData.startTime;
+
+    return time < 0 ? 0 : time;
+  }
+
+  // private
   function initDrivingData() {
     $scope.drivingData = {
+      startTime: 0,
       lastFocusDistance: 0,
       totalDistance: 0,
       withFocus: 0,
@@ -48,27 +98,29 @@ angular.module('starter.controllers', [])
   // public
   function start() {
     $scope.isDriveMode = true;
+    $scope.drivingData.startTime = Date.now() / 1000 | 0;
 
     runningInterval = $interval(function() {
       var distanceDelta = 0.2;
-      
-      /**
-       * HARD-CODED ALERT WHEN USER LOOSES FOCUS ON THE ROAD
-       */
-      if ($scope.drivingData.totalDistance > 1.0 && $scope.drivingData.totalDistance < 2.4) {
-        $scope.isFocused = false;
 
-        $scope.drivingData.lastFocusDistance = 0;
-        $scope.drivingData.withoutFocus = Math.round(($scope.drivingData.withoutFocus + distanceDelta) * 100) / 100;
-      } else {
-        $scope.isFocused = true;
+      hzApi.checkStatus(function(extractedInfo) {
+        extractedInfo = extractedInfo || { isFocused: true };
 
-        $scope.drivingData.lastFocusDistance = Math.round(($scope.drivingData.lastFocusDistance + distanceDelta) * 100) / 100;
-        $scope.drivingData.withFocus = Math.round(($scope.drivingData.withFocus + distanceDelta) * 100) / 100;
-      }
-      
-      // we round it up to two decimal places, as js sucks in handling addition of floats.
-      $scope.drivingData.totalDistance = Math.round(($scope.drivingData.totalDistance + distanceDelta) * 100) / 100;
+        if (!extractedInfo.isFocused) {
+          $scope.isFocused = false;
+
+          $scope.drivingData.lastFocusDistance = 0;
+          $scope.drivingData.withoutFocus = Math.round(($scope.drivingData.withoutFocus + distanceDelta) * 100) / 100;
+        } else {
+          $scope.isFocused = true;
+
+          $scope.drivingData.lastFocusDistance = Math.round(($scope.drivingData.lastFocusDistance + distanceDelta) * 100) / 100;
+          $scope.drivingData.withFocus = Math.round(($scope.drivingData.withFocus + distanceDelta) * 100) / 100;
+        }
+        
+        // we round it up to two decimal places, as js sucks in handling addition of floats.
+        $scope.drivingData.totalDistance = Math.round(($scope.drivingData.totalDistance + distanceDelta) * 100) / 100;
+      });
     }, 1000);
   };
 
@@ -78,10 +130,13 @@ angular.module('starter.controllers', [])
 
     $scope.isDriveMode = false;
 
+    var totalTimeInSeconds = calcTime();
+
     hzTripRewards.addReward(
       $scope.drivingData.totalDistance,
       $scope.drivingData.withFocus,
-      $scope.drivingData.withoutFocus
+      $scope.drivingData.withoutFocus,
+      totalTimeInSeconds
     );
 
     initDrivingData();

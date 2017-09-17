@@ -14,7 +14,6 @@ Fact 2: 6 out of 10 car crashes involve distraction, out of which 12% are due to
 ## Drive:Focus
 This project intends to promote safe behaviours and new ideas to embed road-smartness into the future way of mobility.
 
-
 ## What is used?
 * Microsoft Cognitive Services is used. MVP uses entity/item tagging to detect possible elements of the photo which may be assosiated with distraction / tiredness. i.e cellphone.
 

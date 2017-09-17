@@ -9,8 +9,8 @@
     
     <div ng-if="isDriveMode && isFocused" class="row" style="margin-top: 100px">
         <div class="col-50 col-offset-25">
-            <h1 class="text-center">{{drivingData.totalDistance}} km</h1>
-            <p class="text-center">You have stayed focused for {{drivingData.lastFocusDistance}} km!</p>
+            <h1 class="text-center">{{displayTime(calcTime())}}</h1>
+            <p class="text-center">You have stayed focused for {{displayTime(calcTime())}}!</p>
             <button ng-click="stop()" style="display:block; margin: 0 auto" class="button button-default">
                 Stop
             </button>

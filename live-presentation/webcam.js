@@ -25,7 +25,7 @@
     canvas = document.getElementById('canvas');
     photo = document.getElementById('photo');
     startbutton = document.getElementById('startbutton');
-	startbuttonSound = document.getElementById('startbuttonSound');
+	  startbuttonSound = document.getElementById('startbuttonSound');
 	console.log(startbuttonSound);
 
 
@@ -53,7 +53,7 @@
       }
     );
 
-    video.addEventListener('canplay', function(ev){
+    video.addEventListener('canplay', function(ev) {
       if (!streaming) {
         height = video.videoHeight / (video.videoWidth/width);
       
@@ -73,22 +73,12 @@
       }
     }, false);
 	
-	setInterval(function() {
-	  // method to be executed;
-	  takepicture();
-	  console.log('Take a picture.');
-	}, 5000);
-    
-    startbutton.addEventListener('click', function(ev){	 	
-    }, false);
-        
-      	// console.log(startbuttonSound);
-	  	// startbuttonSound.addEventListener('click', function(ev){
-	    // responsiveVoice.speak("Hi there, you seem distracted. Could you put your phone away.");
-  		// }, false);
-  
+    setInterval(function() {
+      // method to be executed;
+      takepicture();
+      console.log('Take a picture.');
+    }, 3000);
   }
-
 
   // Fill the photo with an indication that none has been
   // captured.
@@ -117,29 +107,16 @@
       context.drawImage(video, 0, 0, width, height);
     
       var data = canvas.toDataURL('image/png');
+      
       photo.setAttribute('src', data);
       
-      var subscriptionKey = '03772567483d4a07aa5da13bae6d21da';
-      var uriBase = "http://localhost:8090/upload" || "https://westeurope.api.cognitive.microsoft.com/vision/v1.0/analyze";
-	 
-      /*
-      // Request parameters.
-        var params = {
-              "visualFeatures": "Categories,Description,Color",
-              "details": "",
-              "language": "en",
-        };
-      */
-      
       var frame = captureVideoFrame('video', 'png');
-      var apiKey = "03772567483d4a07aa5da13bae6d21da";
-
       var data = new FormData()
       
       data.append('image', frame.blob, 'image.png')
 
       $.ajax({
-          url: "http://localhost:8090/upload",
+          url: /*"http://localhost:8090/upload" ||*/ "http://drive-focus.vq-labs.com/upload",
           data: data,
           cache: false,
           contentType: false,
@@ -159,7 +136,4 @@
   // Set up our event listener to run the startup process
   // once loading is complete.
   window.addEventListener('load', startup, false);
-
-
-
 })();
